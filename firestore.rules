@@ -1,0 +1,42 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions for Tharavadu Store Owner Access Control
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isStoreOwner() {
+      return isAuthenticated() &&
+             request.auth.token.email != null &&
+             request.auth.token.email.lower() == 'sujajayadevan1@gmail.com';
+    }
+
+    // Products collection:
+    // - Public visitors can read the store catalog.
+    // - Only the verified store owner (sujajayadevan1@gmail.com) can add, update, or delete products.
+    match /products/{productId} {
+      allow read: if true;
+      allow create, update, delete: if isStoreOwner();
+    }
+
+    // Orders collection:
+    // - Customers can submit new orders upon completing checkout.
+    // - Only the store owner (sujajayadevan1@gmail.com) can view, update, or delete customer orders.
+    match /orders/{orderId} {
+      allow create: if request.resource.data.keys().hasAll(['orderId', 'customerName', 'customerPhone', 'deliveryAddress', 'totalAmount']) &&
+                       request.resource.data.customerName is string &&
+                       request.resource.data.customerName.size() > 0 &&
+                       request.resource.data.customerName.size() < 300 &&
+                       request.resource.data.totalAmount is number &&
+                       request.resource.data.totalAmount >= 0;
+      allow read, update, delete: if isStoreOwner();
+    }
+
+    // Default catch-all rule
+    match /{document=**} {
+      allow read, write: if isStoreOwner();
+    }
+  }
+}

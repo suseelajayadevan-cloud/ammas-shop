@@ -1,0 +1,8 @@
+{
+  "name": "Ammas Craft Works",
+  "description": "Traditional Kerala Nettipatam (elephant caparisons) and handcrafted artisanal materials.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

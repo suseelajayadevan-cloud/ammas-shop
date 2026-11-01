@@ -1,0 +1,59 @@
+{
+  "entities": {
+    "Product": {
+      "title": "Product",
+      "description": "Handcrafted Kerala store item in the Tharavadu Store catalog",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Product identifier" },
+        "title": { "type": "string", "description": "Product title" },
+        "category": { "type": "string", "description": "Product category" },
+        "price": { "type": "number", "description": "Selling price in INR" },
+        "originalPrice": { "type": "number", "description": "Optional original MRP price" },
+        "stock": { "type": "string", "description": "Stock availability status" },
+        "imageUrl": { "type": "string", "description": "Product image URL or base64 data URL" },
+        "dimensions": { "type": "string", "description": "Product dimensions" },
+        "material": { "type": "string", "description": "Craft material" },
+        "description": { "type": "string", "description": "Detailed product description" },
+        "rating": { "type": "number", "description": "Customer rating" },
+        "reviewsCount": { "type": "number", "description": "Number of customer reviews" },
+        "isBestseller": { "type": "boolean", "description": "Whether marked as a bestseller" },
+        "createdAt": { "type": "string", "description": "ISO timestamp of creation" }
+      },
+      "required": ["id", "title", "category", "price", "stock", "imageUrl", "description"]
+    },
+    "Order": {
+      "title": "Order",
+      "description": "Customer checkout order submitted to Tharavadu Store",
+      "type": "object",
+      "properties": {
+        "orderId": { "type": "string", "description": "Order reference ID" },
+        "customerName": { "type": "string", "description": "Customer full name" },
+        "customerPhone": { "type": "string", "description": "Customer phone number" },
+        "customerEmail": { "type": "string", "description": "Customer email address" },
+        "deliveryAddress": { "type": "string", "description": "Delivery street address" },
+        "city": { "type": "string", "description": "Delivery city" },
+        "state": { "type": "string", "description": "Delivery state" },
+        "pincode": { "type": "string", "description": "Delivery PIN code" },
+        "paymentMethod": { "type": "string", "description": "Selected payment method" },
+        "items": { "type": "array", "description": "Ordered line items" },
+        "subtotal": { "type": "number", "description": "Order subtotal" },
+        "deliveryFee": { "type": "number", "description": "Delivery charge" },
+        "totalAmount": { "type": "number", "description": "Total order amount" },
+        "status": { "type": "string", "description": "Order verification status" },
+        "createdAt": { "type": "string", "description": "ISO timestamp of order submission" }
+      },
+      "required": ["orderId", "customerName", "customerPhone", "deliveryAddress", "city", "state", "pincode", "paymentMethod", "items", "totalAmount"]
+    }
+  },
+  "firestore": {
+    "/products/{productId}": {
+      "schema": { "$ref": "#/entities/Product" },
+      "description": "Storefront product catalog items"
+    },
+    "/orders/{orderId}": {
+      "schema": { "$ref": "#/entities/Order" },
+      "description": "Submitted customer checkout orders"
+    }
+  }
+}
